@@ -4,12 +4,10 @@ import com.chiva.phoneshop.dto.BrandDto;
 import com.chiva.phoneshop.model.Brand;
 import com.chiva.phoneshop.repository.BrandRepository;
 import com.chiva.phoneshop.service.BrandService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.Optional;
 
