@@ -12,6 +12,7 @@ public class EntityMapper {
 
     public static BrandDto toBrandDto(Brand brand) {
         BrandDto brandDto = new BrandDto();
+        brandDto.setId(brand.getId());
         brandDto.setName(brand.getName());
         return  brandDto;
     }
