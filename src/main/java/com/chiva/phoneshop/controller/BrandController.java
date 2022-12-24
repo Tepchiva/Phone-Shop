@@ -1,13 +1,12 @@
 package com.chiva.phoneshop.controller;
 
 import com.chiva.phoneshop.dto.BrandDto;
+import com.chiva.phoneshop.exception.ApiException;
 import com.chiva.phoneshop.mapper.BrandMapper;
-import com.chiva.phoneshop.mapper.ModelMapper;
 import com.chiva.phoneshop.model.Brand;
 import com.chiva.phoneshop.service.BrandService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,18 +48,19 @@ public class BrandController {
     }
 
     @GetMapping( path = "{id}")
-    public ResponseEntity<Brand> getById(@PathVariable("id") int id) {
+    public ResponseEntity<Brand> getById(@PathVariable("id") int id) throws ApiException {
+        log.info("get brand by id: %d".formatted(id));
         return ResponseEntity.ok(brandService.getById(id));
     }
 
     @PutMapping(path = "{id}")
-    public ResponseEntity<Brand> update(@PathVariable int id, @RequestBody BrandDto brandDto) {
+    public ResponseEntity<Brand> update(@PathVariable int id, @RequestBody BrandDto brandDto) throws ApiException {
 
         return ResponseEntity.ok(this.brandService.update(id, brandDto));
     }
 
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<?> delete(@PathVariable int id) {
+    public ResponseEntity<?> delete(@PathVariable int id) throws ApiException {
         brandService.delete(id);
         log.info("delete record id: %d".formatted(id));
         return ResponseEntity.ok().build();

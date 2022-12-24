@@ -1,12 +1,17 @@
 package com.chiva.phoneshop.service.impl;
 
+import com.chiva.phoneshop.exception.ApiException;
+import com.chiva.phoneshop.exception.ResourceNotFoundException;
 import com.chiva.phoneshop.model.Brand;
 import com.chiva.phoneshop.model.Model;
 import com.chiva.phoneshop.repository.ModelRepository;
 import com.chiva.phoneshop.service.BrandService;
 import com.chiva.phoneshop.service.ModelService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,9 +27,17 @@ public class ModelServiceImp implements ModelService {
     //    }
 
     @Override
-    public Model save(Model model) {
+    public Model save(Model model) throws ApiException {
 
-        Brand brand = this.brandService.getById(model.getBrand().getId());
+        // check brand
+        this.brandService.getById(model.getBrand().getId());
         return modelRepository.save(model);
+    }
+
+    @Override
+    public Model getById(Integer id) throws ApiException {
+        return modelRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Model", id));
     }
 }
