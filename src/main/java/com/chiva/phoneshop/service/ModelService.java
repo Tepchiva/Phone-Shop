@@ -5,7 +5,7 @@ import com.chiva.phoneshop.model.Model;
 
 public interface ModelService {
 
-    Model save(Model model) throws ApiException;
+    Model save(Model model);
 
-    Model getById(Integer id) throws ApiException;
+    Model getById(Integer id);
 }

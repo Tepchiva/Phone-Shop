@@ -27,7 +27,7 @@ public class ModelServiceImp implements ModelService {
     //    }
 
     @Override
-    public Model save(Model model) throws ApiException {
+    public Model save(Model model) {
 
         // check brand
         this.brandService.getById(model.getBrand().getId());
@@ -35,7 +35,7 @@ public class ModelServiceImp implements ModelService {
     }
 
     @Override
-    public Model getById(Integer id) throws ApiException {
+    public Model getById(Integer id) {
         return modelRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Model", id));

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 public class ModelController {
     private final ModelService modelService;
     @PostMapping
-    public ResponseEntity<ModelDto> create(@RequestBody ModelDto modelDto) throws ApiException {
+    public ResponseEntity<ModelDto> create(@RequestBody ModelDto modelDto) {
 
         Model model = ModelMapper.INSTANCE.toModel(modelDto);
 
@@ -29,8 +29,9 @@ public class ModelController {
     }
 
     @GetMapping( path = "{id}")
-    public ResponseEntity<Model> getById(@PathVariable("id") int id) throws ApiException {
+    public ResponseEntity<ModelDto> getById(@PathVariable("id") int id) {
         log.info("get model by id: %d".formatted(id));
-        return ResponseEntity.ok(modelService.getById(id));
+        Model model = modelService.getById(id);
+        return ResponseEntity.ok(ModelMapper.INSTANCE.toModelDto(model));
     }
 }

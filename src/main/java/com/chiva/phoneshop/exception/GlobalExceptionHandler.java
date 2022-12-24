@@ -11,7 +11,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<?> handleHttpClientErrorException(ApiException e) {
 
-        //@TODO: customize response dto message
-        return ResponseEntity.status(e.getStatus()).body(e);
+        ErrorResponse errorResponse = new ErrorResponse(e.getStatus().getReasonPhrase(), e.getMessage());
+        return ResponseEntity.status(e.getStatus()).body(errorResponse);
     }
 }

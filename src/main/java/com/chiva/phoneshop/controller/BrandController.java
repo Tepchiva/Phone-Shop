@@ -48,19 +48,19 @@ public class BrandController {
     }
 
     @GetMapping( path = "{id}")
-    public ResponseEntity<Brand> getById(@PathVariable("id") int id) throws ApiException {
+    public ResponseEntity<Brand> getById(@PathVariable("id") int id) {
         log.info("get brand by id: %d".formatted(id));
         return ResponseEntity.ok(brandService.getById(id));
     }
 
     @PutMapping(path = "{id}")
-    public ResponseEntity<Brand> update(@PathVariable int id, @RequestBody BrandDto brandDto) throws ApiException {
+    public ResponseEntity<Brand> update(@PathVariable int id, @RequestBody BrandDto brandDto) {
 
         return ResponseEntity.ok(this.brandService.update(id, brandDto));
     }
 
     @DeleteMapping(path = "{id}")
-    public ResponseEntity<?> delete(@PathVariable int id) throws ApiException {
+    public ResponseEntity<?> delete(@PathVariable int id) {
         brandService.delete(id);
         log.info("delete record id: %d".formatted(id));
         return ResponseEntity.ok().build();

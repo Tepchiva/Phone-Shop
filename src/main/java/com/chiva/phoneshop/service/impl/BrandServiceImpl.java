@@ -26,7 +26,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Brand getById(Integer id) throws ApiException {
+    public Brand getById(Integer id) {
 
          return brandRepository
                 .findById(id)
@@ -34,7 +34,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Brand update(Integer id, BrandDto brandDto) throws ApiException {
+    public Brand update(Integer id, BrandDto brandDto) {
         
         Brand brand = this.getById(id);
         brand.setName(brandDto.getName());
@@ -48,7 +48,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public void delete(Integer id) throws ApiException {
+    public void delete(Integer id) {
         Brand brand = getById(id);
         brandRepository.delete(brand);
     }

@@ -10,11 +10,11 @@ import java.util.Optional;
 public interface BrandService {
     public Brand save(Brand entity);
 
-    public Brand getById(Integer id) throws ApiException;
+    public Brand getById(Integer id);
 
-    public Brand update(Integer id, BrandDto brandDto) throws ApiException;
+    public Brand update(Integer id, BrandDto brandDto);
 
     public List<Brand> getAllBrands();
 
-    public void delete(Integer id) throws ApiException;
+    public void delete(Integer id);
 }
