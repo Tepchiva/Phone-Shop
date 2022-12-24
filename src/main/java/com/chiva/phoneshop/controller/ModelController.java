@@ -14,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping(path = "/models")
 @RequiredArgsConstructor
@@ -33,5 +37,10 @@ public class ModelController {
         log.info("get model by id: %d".formatted(id));
         Model model = modelService.getById(id);
         return ResponseEntity.ok(ModelMapper.INSTANCE.toModelDto(model));
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<ModelDto>> getModelList(@RequestParam Map<String, String> params) {
+        return ResponseEntity.ok(modelService.getModels(params).stream().map(ModelMapper.INSTANCE::toModelDto).toList());
     }
 }
