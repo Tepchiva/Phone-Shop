@@ -1,4 +1,4 @@
-package com.chiva.phoneshop.spec;
+package com.chiva.phoneshop.utils;
 
 import lombok.Data;
 

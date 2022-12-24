@@ -2,6 +2,7 @@ package com.chiva.phoneshop.spec;
 
 import com.chiva.phoneshop.model.Brand;
 import com.chiva.phoneshop.model.Model;
+import com.chiva.phoneshop.utils.ModelFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 

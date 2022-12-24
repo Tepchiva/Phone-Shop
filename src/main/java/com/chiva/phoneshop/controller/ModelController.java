@@ -1,22 +1,19 @@
 package com.chiva.phoneshop.controller;
 
 import com.chiva.phoneshop.dto.ModelDto;
-import com.chiva.phoneshop.exception.ApiException;
-import com.chiva.phoneshop.mapper.BrandMapper;
+import com.chiva.phoneshop.dto.PageDto;
 import com.chiva.phoneshop.mapper.ModelMapper;
-import com.chiva.phoneshop.model.Brand;
+import com.chiva.phoneshop.mapper.PageMapper;
 import com.chiva.phoneshop.model.Model;
-import com.chiva.phoneshop.service.BrandService;
 import com.chiva.phoneshop.service.ModelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/models")
@@ -40,7 +37,21 @@ public class ModelController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<ModelDto>> getModelList(@RequestParam Map<String, String> params) {
+    public ResponseEntity<List<ModelDto>> getModels(@RequestParam Map<String, String> params) {
         return ResponseEntity.ok(modelService.getModels(params).stream().map(ModelMapper.INSTANCE::toModelDto).toList());
+    }
+
+    @GetMapping(path = "pagination")
+    public ResponseEntity<PageDto> getModelWithPagination(@RequestParam Map<String, String> params) {
+
+        Page<Model> page = modelService.getModelWithPagination(params);
+
+        // Use PageMapper instead
+        // PageDto pageDto = new PageDto(page);
+
+        PageDto pageDto = PageMapper.INSTANCE.toPageDto(page);
+        pageDto.setList(page.stream().map(ModelMapper.INSTANCE::toModelDto).toList());
+
+        return ResponseEntity.ok(pageDto);
     }
 }

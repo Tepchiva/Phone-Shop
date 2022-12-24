@@ -5,10 +5,14 @@ import com.chiva.phoneshop.model.Model;
 import com.chiva.phoneshop.repository.ModelRepository;
 import com.chiva.phoneshop.service.BrandService;
 import com.chiva.phoneshop.service.ModelService;
-import com.chiva.phoneshop.spec.ModelFilter;
+import com.chiva.phoneshop.utils.ModelFilter;
 import com.chiva.phoneshop.spec.ModelSpecification;
+import com.chiva.phoneshop.utils.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.MapUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -76,15 +80,22 @@ public class ModelServiceImp implements ModelService {
         };
          */
 
+        List<Model> models = modelRepository.findAll(getModelSpecification(params), Sort.by(Sort.Order.asc("id")));
+        return models;
+    }
+
+    @Override
+    public Page<Model> getModelWithPagination(Map<String, String> params) {
+        return modelRepository.findAll(getModelSpecification(params), PageUtils.getPageable(params));
+    }
+
+    private ModelSpecification getModelSpecification(Map<String, String> params) {
         ModelFilter modelFilter = new ModelFilter();
         modelFilter.setModelId(MapUtils.getInteger(params, "modelId",null));
         modelFilter.setModelName(params.getOrDefault("modelName", null));
         modelFilter.setBrandId(MapUtils.getInteger(params, "brandId",null));
         modelFilter.setBrandName(params.getOrDefault("brandName", null));
 
-        ModelSpecification modelSpecification = new ModelSpecification(modelFilter);
-
-        List<Model> models = modelRepository.findAll(modelSpecification, Sort.by(Sort.Order.asc("id")));
-        return models;
+        return new ModelSpecification(modelFilter);
     }
 }

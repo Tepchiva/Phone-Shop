@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -35,12 +36,12 @@ public class BrandController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BrandDto>> getAllBrands() {
+    public ResponseEntity<List<BrandDto>> getAllBrands(@RequestParam Map<String, String> params) {
 
-        List<Brand> allBrands = brandService.getAllBrands();
+        List<Brand> brands = brandService.getBrands(params);
 
         // List<BrandDto> allBrandDto = brandDtoStream.collect(Collectors.toList());
-        Stream<BrandDto> brandDtoStream = allBrands.stream().map(brand -> BrandMapper.INSTANCE.toBrandDto(brand) /*EntityMapper.toBrandDto(brand)*/);
+        Stream<BrandDto> brandDtoStream = brands.stream().map(brand -> BrandMapper.INSTANCE.toBrandDto(brand) /*EntityMapper.toBrandDto(brand)*/);
 
         List<BrandDto> allBrandDto = brandDtoStream.toList(); // java >= 16
 

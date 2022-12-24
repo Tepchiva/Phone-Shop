@@ -5,10 +5,13 @@ import com.chiva.phoneshop.exception.ApiException;
 import com.chiva.phoneshop.model.Brand;
 import com.chiva.phoneshop.repository.BrandRepository;
 import com.chiva.phoneshop.service.BrandService;
+import com.chiva.phoneshop.spec.BrandSpecification;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -43,8 +46,14 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<Brand> getAllBrands() {
-        return brandRepository.findAll();
+    public List<Brand> getBrands(Map<String, String> params) {
+
+        BrandSpecification brandSpecification = new BrandSpecification(
+                    MapUtils.getInteger(params, "brandId", null),
+                    params.getOrDefault("brandName", null)
+                );
+
+        return brandRepository.findAll(brandSpecification);
     }
 
     @Override
