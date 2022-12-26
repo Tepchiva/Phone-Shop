@@ -9,6 +9,6 @@ spring:
     properties:
       hibernate:
         dialect:  org.hibernate.dialect.PostgreSQL81Dialect
-
-
-
+  jackson:
+    serialization:
+      fail-on-empty-beans : false
