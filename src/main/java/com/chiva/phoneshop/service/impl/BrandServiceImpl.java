@@ -1,14 +1,17 @@
 package com.chiva.phoneshop.service.impl;
 
 import com.chiva.phoneshop.dto.BrandDto;
+import com.chiva.phoneshop.exception.ApiException;
 import com.chiva.phoneshop.model.Brand;
 import com.chiva.phoneshop.repository.BrandRepository;
 import com.chiva.phoneshop.service.BrandService;
+import com.chiva.phoneshop.spec.BrandSpecification;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -27,15 +30,15 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Brand getById(Integer id) {
-        Optional<Brand> optionalBrand = brandRepository.findById(id);
-        if (optionalBrand.isPresent()) return optionalBrand.get();
-        else
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "brand not found");
+
+         return brandRepository
+                .findById(id)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "brand not found for id: %d.".formatted(id)));
     }
 
     @Override
     public Brand update(Integer id, BrandDto brandDto) {
-
+        
         Brand brand = this.getById(id);
         brand.setName(brandDto.getName());
         brandRepository.save(brand);
@@ -43,8 +46,14 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<Brand> getAllBrands() {
-        return brandRepository.findAll();
+    public List<Brand> getBrands(Map<String, String> params) {
+
+        BrandSpecification brandSpecification = new BrandSpecification(
+                    MapUtils.getInteger(params, "brandId", null),
+                    params.getOrDefault("brandName", null)
+                );
+
+        return brandRepository.findAll(brandSpecification);
     }
 
     @Override

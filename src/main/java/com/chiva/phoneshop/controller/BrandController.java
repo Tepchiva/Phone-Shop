@@ -1,18 +1,18 @@
 package com.chiva.phoneshop.controller;
 
 import com.chiva.phoneshop.dto.BrandDto;
+import com.chiva.phoneshop.exception.ApiException;
 import com.chiva.phoneshop.mapper.BrandMapper;
-import com.chiva.phoneshop.mapper.ModelMapper;
 import com.chiva.phoneshop.model.Brand;
 import com.chiva.phoneshop.service.BrandService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -36,12 +36,12 @@ public class BrandController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BrandDto>> getAllBrands() {
+    public ResponseEntity<List<BrandDto>> getAllBrands(@RequestParam Map<String, String> params) {
 
-        List<Brand> allBrands = brandService.getAllBrands();
+        List<Brand> brands = brandService.getBrands(params);
 
         // List<BrandDto> allBrandDto = brandDtoStream.collect(Collectors.toList());
-        Stream<BrandDto> brandDtoStream = allBrands.stream().map(brand -> BrandMapper.INSTANCE.toBrandDto(brand) /*EntityMapper.toBrandDto(brand)*/);
+        Stream<BrandDto> brandDtoStream = brands.stream().map(brand -> BrandMapper.INSTANCE.toBrandDto(brand) /*EntityMapper.toBrandDto(brand)*/);
 
         List<BrandDto> allBrandDto = brandDtoStream.toList(); // java >= 16
 
@@ -50,6 +50,7 @@ public class BrandController {
 
     @GetMapping( path = "{id}")
     public ResponseEntity<Brand> getById(@PathVariable("id") int id) {
+        log.info("get brand by id: %d".formatted(id));
         return ResponseEntity.ok(brandService.getById(id));
     }
 
