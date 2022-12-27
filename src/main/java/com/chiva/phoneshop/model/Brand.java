@@ -1,12 +1,16 @@
 package com.chiva.phoneshop.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Data
 @Table(name = "brands")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Brand {
     @Id
     //    @GeneratedValue(strategy = GenerationType.SEQUENCE) use global generate sequence
