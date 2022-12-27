@@ -5,6 +5,7 @@ import com.chiva.phoneshop.dto.PageDto;
 import com.chiva.phoneshop.mapper.ModelMapper;
 import com.chiva.phoneshop.mapper.PageMapper;
 import com.chiva.phoneshop.model.Model;
+import com.chiva.phoneshop.service.BrandService;
 import com.chiva.phoneshop.service.ModelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +22,21 @@ import java.util.Map;
 @Slf4j
 public class ModelController {
     private final ModelService modelService;
+
+    private final ModelMapper modelMapper;
+
     @PostMapping
     public ResponseEntity<ModelDto> create(@RequestBody ModelDto modelDto) {
-        return ResponseEntity.ok(ModelMapper.INSTANCE.toModelDto(modelService.save(modelDto)));
+        // check brand
+        // already check in ModelMapper
+        // this.brandService.getById(modelDto.getBrandId());
+
+        // if we try use '@Mapper(componentModel = "spring", uses = {BrandService.class})' in mpper,
+        // 'ModelMapper.INSTANCE.toModel(modelDto)' will not support with autowire of spring
+        // because it's static, it's lost context of spring
+        // Model model = ModelMapper.INSTANCE.toModel(modelDto);
+         Model model = this.modelMapper.toModel(modelDto);
+        return ResponseEntity.ok(ModelMapper.INSTANCE.toModelDto(modelService.save(model)));
     }
 
     @GetMapping( path = "{id}")

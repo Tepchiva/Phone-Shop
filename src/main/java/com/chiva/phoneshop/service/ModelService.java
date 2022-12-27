@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface ModelService {
 
-    Model save(ModelDto modelDto);
+    Model save(Model model);
 
     Model getById(Integer id);
 

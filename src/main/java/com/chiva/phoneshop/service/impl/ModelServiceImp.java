@@ -27,18 +27,13 @@ public class ModelServiceImp implements ModelService {
 
     private final ModelRepository modelRepository;
 
-    private final BrandService brandService;
-
     /*replace by @RequiredArgsConstructor annotation*/
     //    public ModelServiceImp(ModelRepository modelRepository) {
     //        this.modelRepository = modelRepository;
     //    }
 
     @Override
-    public Model save(ModelDto modelDto) {
-        // check brand
-        this.brandService.getById(modelDto.getBrandId());
-        Model model = ModelMapper.INSTANCE.toModel(modelDto);
+    public Model save(Model model) {
         return modelRepository.save(model);
     }
 
