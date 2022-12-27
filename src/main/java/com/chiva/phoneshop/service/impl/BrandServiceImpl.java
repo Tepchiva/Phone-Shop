@@ -6,6 +6,7 @@ import com.chiva.phoneshop.model.Brand;
 import com.chiva.phoneshop.repository.BrandRepository;
 import com.chiva.phoneshop.service.BrandService;
 import com.chiva.phoneshop.spec.BrandSpecification;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class BrandServiceImpl implements BrandService {
 
     private final BrandRepository brandRepository;
@@ -25,6 +27,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Brand save(Brand entity) {
+        log.info("Creating new brand {}", entity);
         return brandRepository.save(entity);
     }
 
