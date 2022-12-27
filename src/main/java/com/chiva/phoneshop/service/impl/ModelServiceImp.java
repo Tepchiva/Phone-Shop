@@ -1,6 +1,8 @@
 package com.chiva.phoneshop.service.impl;
 
+import com.chiva.phoneshop.dto.ModelDto;
 import com.chiva.phoneshop.exception.ResourceNotFoundException;
+import com.chiva.phoneshop.mapper.ModelMapper;
 import com.chiva.phoneshop.model.Model;
 import com.chiva.phoneshop.repository.ModelRepository;
 import com.chiva.phoneshop.service.BrandService;
@@ -33,10 +35,10 @@ public class ModelServiceImp implements ModelService {
     //    }
 
     @Override
-    public Model save(Model model) {
-
+    public Model save(ModelDto modelDto) {
         // check brand
-        this.brandService.getById(model.getBrand().getId());
+        this.brandService.getById(modelDto.getBrandId());
+        Model model = ModelMapper.INSTANCE.toModel(modelDto);
         return modelRepository.save(model);
     }
 

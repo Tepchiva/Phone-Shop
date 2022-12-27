@@ -13,7 +13,9 @@ public interface BrandService {
 
     public Brand getById(Integer id);
 
-    public Brand update(Integer id, BrandDto brandDto);
+    // old
+    //    public Brand update(Integer id, BrandDto brandDto);
+    public Brand update(Integer id, Brand brand);
 
     public List<Brand> getBrands(Map<String, String> params);
 

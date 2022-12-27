@@ -54,10 +54,16 @@ public class BrandController {
         return ResponseEntity.ok(brandService.getById(id));
     }
 
+    // old
+    //    @PutMapping(path = "{id}")
+    //    public ResponseEntity<Brand> update(@PathVariable int id, @RequestBody BrandDto brandDto) {
+    //
+    //        return ResponseEntity.ok(this.brandService.update(id, brandDto));
+    //    }
+    //
     @PutMapping(path = "{id}")
     public ResponseEntity<Brand> update(@PathVariable int id, @RequestBody BrandDto brandDto) {
-
-        return ResponseEntity.ok(this.brandService.update(id, brandDto));
+        return ResponseEntity.ok(this.brandService.update(id, BrandMapper.INSTANCE.toBrand(brandDto)));
     }
 
     @DeleteMapping(path = "{id}")

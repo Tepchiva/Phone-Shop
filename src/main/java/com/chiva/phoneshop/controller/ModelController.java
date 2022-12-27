@@ -23,10 +23,7 @@ public class ModelController {
     private final ModelService modelService;
     @PostMapping
     public ResponseEntity<ModelDto> create(@RequestBody ModelDto modelDto) {
-
-        Model model = ModelMapper.INSTANCE.toModel(modelDto);
-
-        return ResponseEntity.ok(ModelMapper.INSTANCE.toModelDto(modelService.save(model)));
+        return ResponseEntity.ok(ModelMapper.INSTANCE.toModelDto(modelService.save(modelDto)));
     }
 
     @GetMapping( path = "{id}")
