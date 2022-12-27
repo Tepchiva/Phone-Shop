@@ -1,7 +1,9 @@
 package com.chiva.phoneshop.spec;
 
 import com.chiva.phoneshop.model.Brand;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -12,11 +14,12 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class BrandSpecification implements Specification<Brand> {
 
-    private final Integer brandId;
-    private final String brandName;
+    private Integer brandId;
+    private String brandName;
 
     @Override
     public Predicate toPredicate(Root<Brand> brand, CriteriaQuery<?> query, CriteriaBuilder cb) {

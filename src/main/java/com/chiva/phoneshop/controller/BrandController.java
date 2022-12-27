@@ -5,8 +5,10 @@ import com.chiva.phoneshop.exception.ApiException;
 import com.chiva.phoneshop.mapper.BrandMapper;
 import com.chiva.phoneshop.model.Brand;
 import com.chiva.phoneshop.service.BrandService;
+import com.chiva.phoneshop.spec.BrandSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +40,15 @@ public class BrandController {
     @GetMapping
     public ResponseEntity<List<BrandDto>> getAllBrands(@RequestParam Map<String, String> params) {
 
-        List<Brand> brands = brandService.getBrands(params);
+        BrandSpecification brandSpecification = new BrandSpecification(
+                MapUtils.getInteger(params, "brandId", null),
+                params.getOrDefault("brandName", null)
+        );
+
+        List<Brand> brands = brandService.getBrands(brandSpecification);
 
         // List<BrandDto> allBrandDto = brandDtoStream.collect(Collectors.toList());
+
         Stream<BrandDto> brandDtoStream = brands.stream().map(brand -> BrandMapper.INSTANCE.toBrandDto(brand) /*EntityMapper.toBrandDto(brand)*/);
 
         List<BrandDto> allBrandDto = brandDtoStream.toList(); // java >= 16

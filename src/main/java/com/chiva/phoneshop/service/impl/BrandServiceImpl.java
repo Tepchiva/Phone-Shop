@@ -58,13 +58,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<Brand> getBrands(Map<String, String> params) {
-
-        BrandSpecification brandSpecification = new BrandSpecification(
-                    MapUtils.getInteger(params, "brandId", null),
-                    params.getOrDefault("brandName", null)
-                );
-
+    public List<Brand> getBrands(BrandSpecification brandSpecification) {
         return brandRepository.findAll(brandSpecification);
     }
 
