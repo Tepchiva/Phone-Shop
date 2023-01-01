@@ -5,20 +5,19 @@ import com.chiva.phoneshop.model.Brand;
 import com.chiva.phoneshop.repository.BrandRepository;
 import com.chiva.phoneshop.service.impl.BrandServiceImpl;
 import com.chiva.phoneshop.spec.BrandSpecification;
-import org.apache.commons.collections4.MapUtils;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.Mock;
 
 import static org.mockito.ArgumentMatchers.any;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
+import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.mockito.stubbing.Answer;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,12 +39,15 @@ class BrandServiceTest {
 
     private Brand brand;
 
+    @Captor
+    private ArgumentCaptor<Brand> brandArgumentCaptor;
+
     @BeforeEach
     void setup() {
         this.brand = new Brand(1, "Apple");
         this.brandService = new BrandServiceImpl(brandRepository);
-        Mockito.when(brandRepository.findById(2)).thenReturn(Optional.empty());
-        Mockito.when(brandRepository.findById(1)).thenReturn(Optional.of(brand));
+        when(brandRepository.findById(2)).thenReturn(Optional.empty());
+        when(brandRepository.findById(1)).thenReturn(Optional.of(brand));
     }
 
     // test save old style
@@ -66,7 +68,7 @@ class BrandServiceTest {
         //            }
         //        });
         // use lambda instead
-        Mockito.when(brandRepository.save(any(Brand.class))).thenAnswer(invocation -> {
+        when(brandRepository.save(any(Brand.class))).thenAnswer(invocation -> {
             Brand brandEntity = invocation.getArgument(0);
             brandEntity.setId(1);
             return brandEntity;
@@ -74,8 +76,10 @@ class BrandServiceTest {
 
         // then
         Brand brandNew = brandService.save(brand);
-        Assertions.assertEquals("Apple", brandNew.getName());
-        Assertions.assertEquals(1, brandNew.getId());
+
+        assertEquals("Apple", brandNew.getName());
+
+        assertEquals(1, brandNew.getId());
     }
     */
 
@@ -89,7 +93,7 @@ class BrandServiceTest {
 
         // then
         brandService.save(brand);
-        Mockito.verify(brandRepository, Mockito.times(1)).save(brand);
+        verify(brandRepository, times(1)).save(brand);
     }
 
     @Test
@@ -100,13 +104,16 @@ class BrandServiceTest {
         // when
 
         // moved to setup method
-        // Mockito.when(brandRepository.findById(1)).thenReturn(Optional.of(brand));
+        // when(brandRepository.findById(1)).thenReturn(Optional.of(brand));
 
         // then
         Brand newBrand = brandService.getById(1);
-        Assertions.assertNotNull(newBrand);
-        Assertions.assertEquals("Apple", newBrand.getName());
-        Assertions.assertEquals(1, newBrand.getId());
+
+        assertNotNull(newBrand);
+
+        assertEquals("Apple", newBrand.getName());
+
+        assertEquals(1, newBrand.getId());
     }
 
     @Test
@@ -116,10 +123,11 @@ class BrandServiceTest {
         // when
 
         // moved to setup method
-        // Mockito.when(brandRepository.findById(2)).thenReturn(Optional.empty());
+        // when(brandRepository.findById(2)).thenReturn(Optional.empty());
 
         // then
-        org.assertj.core.api.Assertions.assertThatThrownBy(() -> brandService.getById(2))
+        org.assertj.core.api.Assertions
+                .assertThatThrownBy(() -> brandService.getById(2))
                 .isInstanceOf(ApiException.class)
                 .hasMessageStartingWith("brand not found for id:");
     }
@@ -127,16 +135,16 @@ class BrandServiceTest {
     @Test
     void update() {
         // given
-        Brand brandUpdate = new Brand(1, "Apple v2");
+        Brand brandUpdate = new Brand(5, "Apple v2");
 
         // when
-        Brand brandAfterUpdate = brandService.update(1, brandUpdate);
+        brandService.update(1, brandUpdate);
 
         // then
-        Mockito.verify(brandRepository, Mockito.times(1)).save(brandUpdate);
-
-        // @TODO: check brandAfterUpdate.getName() if it equals to "Apple v2"
-        //        Assertions.assertEquals(brandAfterUpdate.getName(), "Apple v2");
+        verify(brandRepository, atMostOnce()).findById(1);
+         verify(brandRepository).save(brandArgumentCaptor.capture());
+         assertEquals("Apple v2", brandArgumentCaptor.getValue().getName());
+         assertEquals(1, brandArgumentCaptor.getValue().getId());
     }
 
     @Test
@@ -148,11 +156,11 @@ class BrandServiceTest {
 
         // moved to setup method
         // Brand brand = new Brand(1, "Apple");
-        // Mockito.when(brandRepository.findById(brandToDelete)).thenReturn(Optional.of(brand));
+        // when(brandRepository.findById(brandToDelete)).thenReturn(Optional.of(brand));
         brandService.delete(brandToDelete);
 
         // then
-        Mockito.verify(brandRepository, Mockito.times(1)).delete(brand);
+        verify(brandRepository, times(1)).delete(brand);
     }
 
     @Test
@@ -163,15 +171,17 @@ class BrandServiceTest {
                 new Brand(2, "Samsung")
             );
 
-        BrandSpecification brandSpecification = new BrandSpecification();
-        // when
-        Mockito.when(brandRepository.findAll(brandSpecification)).thenReturn(listBrands);
+        Map<String, String> params = new HashMap<>();
 
-        List<Brand> brands = brandService.getBrands(brandSpecification);
+        // when
+        when(brandRepository.findAll(any(BrandSpecification.class))).thenReturn(listBrands);
+        List<Brand> brands = brandService.getBrands(params);
 
         // then
-        Assertions.assertEquals(2, brands.size());
-        Assertions.assertEquals(listBrands.get(0).getName(), brands.get(0).getName());
-        Assertions.assertEquals(listBrands.get(1).getName(), brands.get(1).getName());
+        assertEquals(2, brands.size());
+
+        assertEquals(listBrands.get(0).getName(), brands.get(0).getName());
+
+        assertEquals(listBrands.get(1).getName(), brands.get(1).getName());
     }
 }

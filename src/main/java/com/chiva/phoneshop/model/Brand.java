@@ -17,5 +17,11 @@ public class Brand {
     @GeneratedValue(generator = "brand_seq_generator")
     @SequenceGenerator(name = "brand_seq_generator", initialValue = 1, sequenceName = "brand_seq")
     private Integer id;
+
+    @Column(unique = true)
     private String name;
+
+    public Brand(String name) {
+        this.name = name;
+    }
 }

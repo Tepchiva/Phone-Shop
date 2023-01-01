@@ -40,12 +40,7 @@ public class BrandController {
     @GetMapping
     public ResponseEntity<List<BrandDto>> getAllBrands(@RequestParam Map<String, String> params) {
 
-        BrandSpecification brandSpecification = new BrandSpecification(
-                MapUtils.getInteger(params, "brandId", null),
-                params.getOrDefault("brandName", null)
-        );
-
-        List<Brand> brands = brandService.getBrands(brandSpecification);
+        List<Brand> brands = brandService.getBrands(params);
 
         // List<BrandDto> allBrandDto = brandDtoStream.collect(Collectors.toList());
 

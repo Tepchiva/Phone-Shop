@@ -1,7 +1,7 @@
 package com.chiva.phoneshop.service.impl;
 
-import com.chiva.phoneshop.dto.BrandDto;
 import com.chiva.phoneshop.exception.ApiException;
+import com.chiva.phoneshop.exception.ResourceNotFoundException;
 import com.chiva.phoneshop.mapper.BrandMapper;
 import com.chiva.phoneshop.model.Brand;
 import com.chiva.phoneshop.repository.BrandRepository;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -29,6 +28,8 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Brand save(Brand entity) {
         log.info("Creating new brand {}", entity);
+        if (brandRepository.existsByNameIgnoreCase(entity.getName().trim()))
+            throw new ApiException(HttpStatus.BAD_REQUEST,"ERR-002", "Brand already exist.");
         return brandRepository.save(entity);
     }
 
@@ -37,7 +38,7 @@ public class BrandServiceImpl implements BrandService {
 
          return brandRepository
                 .findById(id)
-                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "brand not found for id: %d.".formatted(id)));
+                .orElseThrow(() -> new ResourceNotFoundException("Brand", id));
     }
 
     // old
@@ -58,7 +59,13 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<Brand> getBrands(BrandSpecification brandSpecification) {
+    public List<Brand> getBrands(Map<String, String> params) {
+
+        BrandSpecification brandSpecification = new BrandSpecification(
+                MapUtils.getInteger(params, "brandId", null),
+                params.getOrDefault("brandName", null)
+        );
+
         return brandRepository.findAll(brandSpecification);
     }
 
