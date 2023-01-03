@@ -129,7 +129,7 @@ class BrandServiceTest {
         org.assertj.core.api.Assertions
                 .assertThatThrownBy(() -> brandService.getById(2))
                 .isInstanceOf(ApiException.class)
-                .hasMessageStartingWith("brand not found for id:");
+                .hasMessageStartingWith("Brand not found for id:");
     }
 
     @Test
