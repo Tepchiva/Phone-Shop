@@ -1,6 +1,6 @@
 package com.chiva.phoneshop.mapper;
 
-import com.chiva.phoneshop.dto.BrandDto;
+import com.chiva.phoneshop.dto.BrandDTO;
 import com.chiva.phoneshop.model.Brand;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,8 +12,8 @@ public interface BrandMapper {
 
     BrandMapper INSTANCE = Mappers.getMapper(BrandMapper.class);
 
-    BrandDto toBrandDto(Brand brand);
-    Brand toBrand(BrandDto brandDto);
+    BrandDTO toBrandDto(Brand brand);
+    Brand toBrand(BrandDTO brandDto);
 
     // for update existing entity
 

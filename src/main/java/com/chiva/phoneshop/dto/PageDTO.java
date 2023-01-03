@@ -1,15 +1,14 @@
 package com.chiva.phoneshop.dto;
 
 import lombok.Data;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 @Data
-public class PageDto {
+public class PageDTO {
     private List<?> list;
 
-    private PaginationDto pageable;
+    private PaginationDTO pageable;
 
     //    Use PageMapper instead
     //    public PageDto(Page<T> page) {

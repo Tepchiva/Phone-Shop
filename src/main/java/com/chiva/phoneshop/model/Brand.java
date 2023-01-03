@@ -1,23 +1,27 @@
 package com.chiva.phoneshop.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
-@Data
+@Setter
+@Getter
+@ToString
 @Table(name = "brands")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Brand {
-    @Id
+
     //    @GeneratedValue(strategy = GenerationType.SEQUENCE) use global generate sequence
-    @GeneratedValue(generator = "brand_seq_generator")
-    @SequenceGenerator(name = "brand_seq_generator", initialValue = 1, sequenceName = "brand_seq")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Integer id;
 
+    @NotBlank
     @Column(unique = true)
     private String name;
 

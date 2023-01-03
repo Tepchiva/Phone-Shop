@@ -1,11 +1,10 @@
 package com.chiva.phoneshop.controller;
 
-import com.chiva.phoneshop.dto.ModelDto;
-import com.chiva.phoneshop.dto.PageDto;
+import com.chiva.phoneshop.dto.ModelDTO;
+import com.chiva.phoneshop.dto.PageDTO;
 import com.chiva.phoneshop.mapper.ModelMapper;
 import com.chiva.phoneshop.mapper.PageMapper;
 import com.chiva.phoneshop.model.Model;
-import com.chiva.phoneshop.service.BrandService;
 import com.chiva.phoneshop.service.ModelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,7 @@ public class ModelController {
     private final ModelMapper modelMapper;
 
     @PostMapping
-    public ResponseEntity<ModelDto> create(@RequestBody ModelDto modelDto) {
+    public ResponseEntity<ModelDTO> create(@RequestBody ModelDTO modelDto) {
         // check brand
         // already check in ModelMapper
         // this.brandService.getById(modelDto.getBrandId());
@@ -40,26 +39,26 @@ public class ModelController {
     }
 
     @GetMapping( path = "{id}")
-    public ResponseEntity<ModelDto> getById(@PathVariable("id") int id) {
+    public ResponseEntity<ModelDTO> getById(@PathVariable("id") int id) {
         log.info("get model by id: %d".formatted(id));
         Model model = modelService.getById(id);
         return ResponseEntity.ok(ModelMapper.INSTANCE.toModelDto(model));
     }
 
     @GetMapping()
-    public ResponseEntity<List<ModelDto>> getModels(@RequestParam Map<String, String> params) {
+    public ResponseEntity<List<ModelDTO>> getModels(@RequestParam Map<String, String> params) {
         return ResponseEntity.ok(modelService.getModels(params).stream().map(ModelMapper.INSTANCE::toModelDto).toList());
     }
 
     @GetMapping(path = "pagination")
-    public ResponseEntity<PageDto> getModelWithPagination(@RequestParam Map<String, String> params) {
+    public ResponseEntity<PageDTO> getModelWithPagination(@RequestParam Map<String, String> params) {
 
         Page<Model> page = modelService.getModelWithPagination(params);
 
         // Use PageMapper instead
         // PageDto pageDto = new PageDto(page);
 
-        PageDto pageDto = PageMapper.INSTANCE.toPageDto(page);
+        PageDTO pageDto = PageMapper.INSTANCE.toPageDto(page);
         pageDto.setList(page.stream().map(ModelMapper.INSTANCE::toModelDto).toList());
 
         return ResponseEntity.ok(pageDto);

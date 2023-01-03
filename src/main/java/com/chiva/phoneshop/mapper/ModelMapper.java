@@ -1,7 +1,6 @@
 package com.chiva.phoneshop.mapper;
 
-import com.chiva.phoneshop.dto.ModelDto;
-import com.chiva.phoneshop.model.Brand;
+import com.chiva.phoneshop.dto.ModelDTO;
 import com.chiva.phoneshop.model.Model;
 import com.chiva.phoneshop.service.BrandService;
 import org.mapstruct.Mapper;
@@ -18,10 +17,10 @@ public interface ModelMapper {
     ModelMapper INSTANCE = Mappers.getMapper(ModelMapper.class);
 
     @Mapping(target = "brandId", source = "model.brand.id")
-    ModelDto toModelDto(Model model);
+    ModelDTO toModelDto(Model model);
 
     @Mapping(target = "brand", source = "dto.brandId")
-    Model toModel(ModelDto dto);
+    Model toModel(ModelDTO dto);
 
     // old: (replace by uses = {BrandService.class})
     //    @Mapping(target = "id", source = "brandId")

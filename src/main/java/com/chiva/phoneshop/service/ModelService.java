@@ -1,7 +1,5 @@
 package com.chiva.phoneshop.service;
 
-import com.chiva.phoneshop.dto.ModelDto;
-import com.chiva.phoneshop.exception.ApiException;
 import com.chiva.phoneshop.model.Model;
 import org.springframework.data.domain.Page;
 

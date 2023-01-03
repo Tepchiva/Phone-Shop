@@ -1,14 +1,10 @@
 package com.chiva.phoneshop.controller;
 
-import com.chiva.phoneshop.dto.BrandDto;
-import com.chiva.phoneshop.exception.ApiException;
+import com.chiva.phoneshop.dto.BrandDTO;
 import com.chiva.phoneshop.mapper.BrandMapper;
 import com.chiva.phoneshop.model.Brand;
 import com.chiva.phoneshop.service.BrandService;
-import com.chiva.phoneshop.spec.BrandSpecification;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +26,7 @@ public class BrandController {
 //    }
 
     @PostMapping()
-    public ResponseEntity<Brand> create(@RequestBody BrandDto brandDto) {
+    public ResponseEntity<Brand> create(@RequestBody BrandDTO brandDto) {
         // Brand brand = EntityMapper.toBrand(brandDto);
         Brand brand = BrandMapper.INSTANCE.toBrand(brandDto);
         brand = brandService.save(brand);
@@ -38,15 +34,15 @@ public class BrandController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BrandDto>> getAllBrands(@RequestParam Map<String, String> params) {
+    public ResponseEntity<List<BrandDTO>> getAllBrands(@RequestParam Map<String, String> params) {
 
         List<Brand> brands = brandService.getBrands(params);
 
         // List<BrandDto> allBrandDto = brandDtoStream.collect(Collectors.toList());
 
-        Stream<BrandDto> brandDtoStream = brands.stream().map(brand -> BrandMapper.INSTANCE.toBrandDto(brand) /*EntityMapper.toBrandDto(brand)*/);
+        Stream<BrandDTO> brandDtoStream = brands.stream().map(brand -> BrandMapper.INSTANCE.toBrandDto(brand) /*EntityMapper.toBrandDto(brand)*/);
 
-        List<BrandDto> allBrandDto = brandDtoStream.toList(); // java >= 16
+        List<BrandDTO> allBrandDto = brandDtoStream.toList(); // java >= 16
 
         return ResponseEntity.ok(allBrandDto);
     }
@@ -65,7 +61,7 @@ public class BrandController {
     //    }
     //
     @PutMapping(path = "{id}")
-    public ResponseEntity<Brand> update(@PathVariable int id, @RequestBody BrandDto brandDto) {
+    public ResponseEntity<Brand> update(@PathVariable int id, @RequestBody BrandDTO brandDto) {
         return ResponseEntity.ok(this.brandService.update(id, BrandMapper.INSTANCE.toBrand(brandDto)));
     }
 

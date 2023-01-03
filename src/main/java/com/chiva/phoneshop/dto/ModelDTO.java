@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class ModelDto {
+public class ModelDTO {
 
     private Integer id;
 

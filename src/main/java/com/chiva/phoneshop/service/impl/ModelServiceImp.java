@@ -1,11 +1,8 @@
 package com.chiva.phoneshop.service.impl;
 
-import com.chiva.phoneshop.dto.ModelDto;
 import com.chiva.phoneshop.exception.ResourceNotFoundException;
-import com.chiva.phoneshop.mapper.ModelMapper;
 import com.chiva.phoneshop.model.Model;
 import com.chiva.phoneshop.repository.ModelRepository;
-import com.chiva.phoneshop.service.BrandService;
 import com.chiva.phoneshop.service.ModelService;
 import com.chiva.phoneshop.utils.ModelFilter;
 import com.chiva.phoneshop.spec.ModelSpecification;
@@ -13,8 +10,6 @@ import com.chiva.phoneshop.utils.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 

@@ -2,11 +2,10 @@ package com.chiva.phoneshop.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.data.domain.Page;
 
 @Data
 @Builder
-public class PaginationDto {
+public class PaginationDTO {
     private int page;
     private int size;
     private long totalElements;
