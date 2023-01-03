@@ -95,8 +95,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-jpamodelgen</artifactId>
-            <version>6.1.6.Final</version>
-            <type>pom</type>
+            <version>5.6.11.Final</version>
             <scope>provided</scope>
         </dependency>
 

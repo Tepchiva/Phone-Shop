@@ -1,7 +1,9 @@
 package com.chiva.phoneshop.spec;
 
 import com.chiva.phoneshop.model.Brand;
+import com.chiva.phoneshop.model.Brand_;
 import com.chiva.phoneshop.model.Model;
+import com.chiva.phoneshop.model.Model_;
 import com.chiva.phoneshop.utils.ModelFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -25,13 +27,16 @@ public class ModelSpecification implements Specification<Model> {
             // predicateList.add(model.get("id").in(modelFilter.getId()));
             predicateList.add(cb.equal(model.get("id"), modelFilter.getModelId()));
 
-        if (modelFilter.getModelName() != null)
-            predicateList.add(cb.like(cb.upper(model.get("name")), "%" + modelFilter.getModelName().toUpperCase() + "%"));
+        if (modelFilter.getModelName() != null) {
+            // predicateList.add(cb.like(cb.upper(model.get("name")), "%" + modelFilter.getModelName().toUpperCase() + "%"));
+            // type safe using style (hibernate model generator)
+            predicateList.add(cb.like(cb.upper(model.get(Model_.NAME)), "%" + modelFilter.getModelName().toUpperCase() + "%"));
+        }
 
-        if (modelFilter.getBrandId() != null) predicateList.add(cb.equal(brandJoin.get("id"), modelFilter.getBrandId()));
+        if (modelFilter.getBrandId() != null) predicateList.add(cb.equal(brandJoin.get(Brand_.id), modelFilter.getBrandId()));
 
         if (modelFilter.getBrandName() != null) {
-            Predicate predicateBrandName = cb.like(cb.upper(brandJoin.get("name")), "%" + modelFilter.getBrandName().toUpperCase() + "%");
+            Predicate predicateBrandName = cb.like(cb.upper(brandJoin.get(Brand_.NAME)), "%" + modelFilter.getBrandName().toUpperCase() + "%");
             predicateList.add(predicateBrandName);
         }
 

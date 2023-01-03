@@ -1,6 +1,7 @@
 package com.chiva.phoneshop.spec;
 
 import com.chiva.phoneshop.model.Brand;
+import com.chiva.phoneshop.model.Brand_;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,8 +26,8 @@ public class BrandSpecification implements Specification<Brand> {
     public Predicate toPredicate(Root<Brand> brand, CriteriaQuery<?> query, CriteriaBuilder cb) {
 
         List<Predicate> predicateList = new ArrayList<>();
-        if (brandId != null) predicateList.add(brand.get("id").in(brandId));
-        if (brandName !=null) predicateList.add(cb.like(cb.upper(brand.get("name")), "%"+brandName.toUpperCase()+"%"));
+        if (brandId != null) predicateList.add(brand.get(Brand_.ID).in(brandId));
+        if (brandName !=null) predicateList.add(cb.like(cb.upper(brand.get(Brand_.NAME)), "%"+brandName.toUpperCase()+"%"));
 
         Predicate[] predicates = predicateList.toArray(Predicate[]::new);
 
