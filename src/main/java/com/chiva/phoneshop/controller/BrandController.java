@@ -21,9 +21,9 @@ public class BrandController {
 
     @Autowired
     private BrandService brandService;
-//    public BrandController(BrandService brandService) {
-//        this.brandService = brandService;
-//    }
+    //    public BrandController(BrandService brandService) {
+    //        this.brandService = brandService;
+    //    }
 
     @PostMapping()
     public ResponseEntity<Brand> create(@RequestBody BrandDTO brandDto) {

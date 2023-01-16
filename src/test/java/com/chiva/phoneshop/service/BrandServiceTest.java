@@ -5,6 +5,7 @@ import com.chiva.phoneshop.model.Brand;
 import com.chiva.phoneshop.repository.BrandRepository;
 import com.chiva.phoneshop.service.impl.BrandServiceImpl;
 import com.chiva.phoneshop.spec.BrandSpecification;
+import com.chiva.phoneshop.utils.Constant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,10 +45,10 @@ class BrandServiceTest {
 
     @BeforeEach
     void setup() {
-        this.brand = new Brand(1, "Apple");
+        this.brand = new Brand(1, "Apple", Constant.STATUS_ACT);
         this.brandService = new BrandServiceImpl(brandRepository);
-        when(brandRepository.findById(2)).thenReturn(Optional.empty());
-        when(brandRepository.findById(1)).thenReturn(Optional.of(brand));
+        when(brandRepository.findByIdAndStatus(2, Constant.STATUS_ACT)).thenReturn(Optional.empty());
+        when(brandRepository.findByIdAndStatus(1, Constant.STATUS_ACT)).thenReturn(Optional.of(brand));
     }
 
     // test save old style
@@ -104,7 +105,7 @@ class BrandServiceTest {
         // when
 
         // moved to setup method
-        // when(brandRepository.findById(1)).thenReturn(Optional.of(brand));
+        // when(brandRepository.findByIdAndStatus(1)).thenReturn(Optional.of(brand));
 
         // then
         Brand newBrand = brandService.getById(1);
@@ -123,7 +124,7 @@ class BrandServiceTest {
         // when
 
         // moved to setup method
-        // when(brandRepository.findById(2)).thenReturn(Optional.empty());
+        // when(brandRepository.findByIdAndStatus(2)).thenReturn(Optional.empty());
 
         // then
         org.assertj.core.api.Assertions
@@ -135,13 +136,13 @@ class BrandServiceTest {
     @Test
     void update() {
         // given
-        Brand brandUpdate = new Brand(5, "Apple v2");
+        Brand brandUpdate = new Brand(5, "Apple v2", Constant.STATUS_ACT);
 
         // when
         brandService.update(1, brandUpdate);
 
         // then
-        verify(brandRepository, atMostOnce()).findById(1);
+        verify(brandRepository, atMostOnce()).findByIdAndStatus(1, Constant.STATUS_ACT);
          verify(brandRepository).save(brandArgumentCaptor.capture());
          assertEquals("Apple v2", brandArgumentCaptor.getValue().getName());
          assertEquals(1, brandArgumentCaptor.getValue().getId());
@@ -156,19 +157,19 @@ class BrandServiceTest {
 
         // moved to setup method
         // Brand brand = new Brand(1, "Apple");
-        // when(brandRepository.findById(brandToDelete)).thenReturn(Optional.of(brand));
+        // when(brandRepository.findByIdAndStatus(brandToDelete)).thenReturn(Optional.of(brand));
         brandService.delete(brandToDelete);
 
         // then
-        verify(brandRepository, times(1)).delete(brand);
+        assertEquals(Constant.STATUS_DEL, brand.getStatus());
     }
 
     @Test
     void getBrands() {
         // given
         List<Brand> listBrands = List.of(
-                new Brand(1, "Apple"),
-                new Brand(2, "Samsung")
+                new Brand(1, "Apple", Constant.STATUS_ACT),
+                new Brand(2, "Samsung", Constant.STATUS_ACT)
             );
 
         Map<String, String> params = new HashMap<>();

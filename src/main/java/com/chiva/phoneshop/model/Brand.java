@@ -1,10 +1,10 @@
 package com.chiva.phoneshop.model;
 
+import com.chiva.phoneshop.utils.Constant;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Setter
@@ -25,7 +25,12 @@ public class Brand {
     @Column(unique = true)
     private String name;
 
-    public Brand(String name) {
+    @NotBlank
+    @Column(nullable = false, columnDefinition = "varchar(3) default 'ACT'")
+    private String status = Constant.STATUS_ACT;
+
+    public Brand(String name, String status) {
         this.name = name;
+        this.status = status;
     }
 }

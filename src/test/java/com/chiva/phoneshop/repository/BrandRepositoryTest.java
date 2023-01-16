@@ -1,6 +1,7 @@
 package com.chiva.phoneshop.repository;
 
 import com.chiva.phoneshop.model.Brand;
+import com.chiva.phoneshop.utils.Constant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ class BrandRepositoryTest {
 
     @Test
     void findByIdIn() {
-        List<Brand> brands = List.of(new Brand("Apple"), new Brand("Samsung"));
+        List<Brand> brands = List.of(new Brand("Apple", Constant.STATUS_ACT), new Brand("Samsung", Constant.STATUS_ACT));
 
         brandRepository.saveAll(brands);
         List<Brand> brandList = brandRepository.findByIdIn(List.of(1, 2));
