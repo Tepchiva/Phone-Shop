@@ -161,6 +161,8 @@ class BrandServiceTest {
         brandService.delete(brandToDelete);
 
         // then
+        verify(brandRepository).save(brandArgumentCaptor.capture());
+        assertEquals(Constant.STATUS_DEL, brandArgumentCaptor.getValue().getStatus());
         assertEquals(Constant.STATUS_DEL, brand.getStatus());
     }
 
