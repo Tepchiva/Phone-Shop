@@ -5,9 +5,9 @@ application:
 
 spring:
   datasource:
-    url:  jdbc:postgresql://localhost:5432/phone_shop
-    username: chiva
-    password: chiva2018
+    url:  ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update

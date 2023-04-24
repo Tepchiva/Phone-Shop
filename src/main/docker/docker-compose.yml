@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  app:
+    image: 'phone-shop-spring-boot-docker-postgres:latest'
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    container_name: phone_shop_app
+    depends_on:
+      - db
+    environment:
+      - DATASOURCE_URL=jdbc:postgresql://db:5432/pg_phone_shop
+      - DATASOURCE_USERNAME=admin
+      - DATASOURCE_PASSWORD=admin
+
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: pg_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=pg_phone_shop
+    volumes:
+      - phone_shop_vl:/var/lib/postgresql/data
+
+volumes:
+  phone_shop_vl: {}
