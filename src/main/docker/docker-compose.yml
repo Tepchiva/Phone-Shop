@@ -1,7 +1,7 @@
 version: '3.9'
 
 services:
-  app:
+  phone_shop_docker_dev:
     image: 'phone-shop-spring-boot-docker-postgres:latest'
     build:
       context: .
@@ -11,6 +11,7 @@ services:
     depends_on:
       - db
     environment:
+      - SPRING_PROFILES_ACTIVE=docker_dev
       - DATASOURCE_URL=jdbc:postgresql://db:5432/pg_phone_shop
       - DATASOURCE_USERNAME=admin
       - DATASOURCE_PASSWORD=admin

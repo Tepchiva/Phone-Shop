@@ -1,0 +1,23 @@
+application:
+  rest:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:8081,http://192.168.1.12:8081}
+
+server:
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    url:  ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect:  org.hibernate.dialect.PostgreSQL81Dialect
+
+  jackson:
+    serialization:
+      fail-on-empty-beans : false
