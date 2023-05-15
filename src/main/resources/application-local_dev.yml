@@ -21,3 +21,14 @@ spring:
   jackson:
     serialization:
       fail-on-empty-beans : false
+
+opentracing:
+  jaeger:
+    http-sender:
+      url: http://localhost:14268/api/traces
+      max-payload: 16486100
+    remote-reporter:
+      max-queue-size: 1000
+    const-sampler:
+      decision: true
+    expand-exception-logs: true

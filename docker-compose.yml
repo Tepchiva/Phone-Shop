@@ -1,0 +1,79 @@
+version: '3.9'
+
+services:
+  phone_shop_docker_dev:
+    image: 'phone-shop-spring-boot-docker-postgres:latest'
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    container_name: phone_shop_app
+    depends_on:
+      - db
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker_dev
+      - DATASOURCE_URL=jdbc:postgresql://db:5432/pg_phone_shop
+      - DATASOURCE_USERNAME=admin
+      - DATASOURCE_PASSWORD=admin
+      - JAEGER_URL=http://jaeger:14268/api/traces
+
+  db:
+    image: 'postgres:13.1-alpine'
+    container_name: pg_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=pg_phone_shop
+    volumes:
+      - phone_shop_vl:/var/lib/postgresql/data
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.45
+    restart: on-failure
+    ports:
+      - 5775:5775/udp
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 5778:5778
+      - 16686:16686
+      - 14268:14268
+      - 14250:14250
+      - 9411:9411
+
+    environment:
+      - COLLECTOR_ZIPKIN_HOST_PORT=9411
+      - COLLECTOR_OTLP_ENABLED=true
+      - SPAN_STORAGE_TYPE=elasticsearch
+      - ES_SERVER_URLS=http://es01:9200
+
+    depends_on:
+      - es01
+
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.10
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=es-docker-cluster
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+      - eslog:/usr/share/elasticsearch/logs
+
+    ports:
+      - "9200:9200"
+
+volumes:
+  phone_shop_vl: {}
+  data01:
+    driver: local
+  eslog:
+    driver: local
