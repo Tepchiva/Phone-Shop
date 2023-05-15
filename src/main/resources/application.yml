@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: Phone Shop
+
+  profiles:
+    active: @spring.profiles.active@
