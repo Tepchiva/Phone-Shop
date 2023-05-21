@@ -6,8 +6,19 @@ import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 @Data
-@AllArgsConstructor
 public class ErrorResponse {
     private String code;
     private String message;
+    private String traceId;
+
+    public ErrorResponse(String code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
+    public ErrorResponse(String code, String message, String traceId) {
+        this.code = code;
+        this.message = message;
+        this.traceId = traceId;
+    }
 }

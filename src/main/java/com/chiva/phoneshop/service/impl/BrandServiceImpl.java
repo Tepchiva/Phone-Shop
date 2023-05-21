@@ -1,6 +1,8 @@
 package com.chiva.phoneshop.service.impl;
 
+import com.chiva.phoneshop.constants.MessageResponseCode;
 import com.chiva.phoneshop.exception.ApiException;
+import com.chiva.phoneshop.exception.CustomException;
 import com.chiva.phoneshop.exception.ResourceNotFoundException;
 import com.chiva.phoneshop.mapper.BrandMapper;
 import com.chiva.phoneshop.model.Brand;
@@ -39,7 +41,7 @@ public class BrandServiceImpl implements BrandService {
 
          return brandRepository
                 .findByIdAndStatus(id, Constant.STATUS_ACT)
-                .orElseThrow(() -> new ResourceNotFoundException("Brand", id));
+                .orElseThrow(() -> new CustomException(MessageResponseCode.ERR_002, "Brand not found!"));
     }
 
     // old

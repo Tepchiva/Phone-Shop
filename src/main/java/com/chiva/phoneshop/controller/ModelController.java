@@ -2,9 +2,11 @@ package com.chiva.phoneshop.controller;
 
 import com.chiva.phoneshop.dto.ModelDTO;
 import com.chiva.phoneshop.dto.PageDTO;
+import com.chiva.phoneshop.exception.SuccessResponse;
 import com.chiva.phoneshop.mapper.ModelMapper;
 import com.chiva.phoneshop.mapper.PageMapper;
 import com.chiva.phoneshop.model.Model;
+import com.chiva.phoneshop.service.MessageResponseService;
 import com.chiva.phoneshop.service.ModelService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,11 +23,11 @@ import java.util.Map;
 @Slf4j
 public class ModelController {
     private final ModelService modelService;
-
+    private final MessageResponseService messageResponseService;
     private final ModelMapper modelMapper;
 
     @PostMapping
-    public ResponseEntity<ModelDTO> create(@RequestBody ModelDTO modelDto) {
+    public ResponseEntity<SuccessResponse<ModelDTO>> create(@RequestBody ModelDTO modelDto) {
         // check brand
         // already check in ModelMapper
         // this.brandService.getById(modelDto.getBrandId());
@@ -35,7 +37,8 @@ public class ModelController {
         // because it's static, it's lost context of spring
         // Model model = ModelMapper.INSTANCE.toModel(modelDto);
          Model model = this.modelMapper.toModel(modelDto);
-        return ResponseEntity.ok(ModelMapper.INSTANCE.toModelDto(modelService.save(model)));
+        ModelDTO resModel = ModelMapper.INSTANCE.toModelDto(modelService.save(model));
+        return messageResponseService.handleSuccessMsgResponse(resModel);
     }
 
     @GetMapping( path = "{id}")
