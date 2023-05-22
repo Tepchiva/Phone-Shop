@@ -42,19 +42,20 @@ public class ModelController {
     }
 
     @GetMapping( path = "{id}")
-    public ResponseEntity<ModelDTO> getById(@PathVariable("id") int id) {
+    public ResponseEntity<SuccessResponse<ModelDTO>> getById(@PathVariable("id") int id) {
         log.info("get model by id: %d".formatted(id));
         Model model = modelService.getById(id);
-        return ResponseEntity.ok(ModelMapper.INSTANCE.toModelDto(model));
+        return messageResponseService.handleSuccessMsgResponse(ModelMapper.INSTANCE.toModelDto(model));
     }
 
     @GetMapping()
-    public ResponseEntity<List<ModelDTO>> getModels(@RequestParam Map<String, String> params) {
-        return ResponseEntity.ok(modelService.getModels(params).stream().map(ModelMapper.INSTANCE::toModelDto).toList());
+    public ResponseEntity<SuccessResponse<List<ModelDTO>>> getModels(@RequestParam Map<String, String> params) {
+        List<ModelDTO> modelDTOList = modelService.getModels(params).stream().map(ModelMapper.INSTANCE::toModelDto).toList();
+        return messageResponseService.handleSuccessMsgResponse(modelDTOList);
     }
 
     @GetMapping(path = "pagination")
-    public ResponseEntity<PageDTO> getModelWithPagination(@RequestParam Map<String, String> params) {
+    public ResponseEntity<SuccessResponse<PageDTO>> getModelWithPagination(@RequestParam Map<String, String> params) {
 
         Page<Model> page = modelService.getModelWithPagination(params);
 
@@ -64,6 +65,6 @@ public class ModelController {
         PageDTO pageDto = PageMapper.INSTANCE.toPageDto(page);
         pageDto.setList(page.stream().map(ModelMapper.INSTANCE::toModelDto).toList());
 
-        return ResponseEntity.ok(pageDto);
+        return messageResponseService.handleSuccessMsgResponse(pageDto);
     }
 }

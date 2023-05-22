@@ -17,9 +17,13 @@ DO $$
             insert into message_response(code, http_status, message, status)
             values('SUC-000', 200,'Default successful.','ACT');
             insert into message_response(code, http_status, message, status)
-            values('ERR-001', 200,'Default error.','ACT');
+            values('ERR-001', 400,'Default error.','ACT');
             insert into message_response(code, http_status, message, status)
-            values('ERR-002', 200,'Data not found.','ACT');
+            values('ERR-002', 400,'Data not found.','ACT');
+            insert into message_response(code, http_status, message, status)
+            values('ERR-003', 400,'Record already exist.','ACT');
+            insert into message_response(code, http_status, message, status)
+            values('ERR-500', 400,'Internal server error.','ACT');
         end if;
 
         create or replace view message_response_v as select * from message_response where status = 'ACT';

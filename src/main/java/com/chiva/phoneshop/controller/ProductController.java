@@ -1,8 +1,10 @@
 package com.chiva.phoneshop.controller;
 
 import com.chiva.phoneshop.dto.ProductDTO;
+import com.chiva.phoneshop.exception.SuccessResponse;
 import com.chiva.phoneshop.mapper.ProductMapper;
 import com.chiva.phoneshop.model.Product;
+import com.chiva.phoneshop.service.MessageResponseService;
 import com.chiva.phoneshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +22,13 @@ public class ProductController {
 
     private final ProductMapper productMapper;
     private final ProductService productService;
+    private final MessageResponseService messageResponseService;
 
     @PostMapping
-    public ResponseEntity<ProductDTO> create(@RequestBody ProductDTO productDTO) {
+    public ResponseEntity<SuccessResponse<ProductDTO>> create(@RequestBody ProductDTO productDTO) {
         log.info("Intercept product dto: {}", productDTO);
         Product product = productService.save(productMapper.toProduct(productDTO));
         log.info("Product after created: {}", product);
-        return ResponseEntity.ok(productMapper.toProductDTO(product));
+        return messageResponseService.handleSuccessMsgResponse(productMapper.toProductDTO(product));
     }
 }

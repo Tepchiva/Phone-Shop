@@ -1,11 +1,12 @@
 package com.chiva.phoneshop.service;
 
-import com.chiva.phoneshop.exception.ApiException;
+import com.chiva.phoneshop.exception.CustomException;
 import com.chiva.phoneshop.model.Brand;
 import com.chiva.phoneshop.repository.BrandRepository;
 import com.chiva.phoneshop.service.impl.BrandServiceImpl;
 import com.chiva.phoneshop.spec.BrandSpecification;
 import com.chiva.phoneshop.utils.Constant;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -127,10 +128,10 @@ class BrandServiceTest {
         // when(brandRepository.findByIdAndStatus(2)).thenReturn(Optional.empty());
 
         // then
-        org.assertj.core.api.Assertions
+        Assertions
                 .assertThatThrownBy(() -> brandService.getById(2))
-                .isInstanceOf(ApiException.class)
-                .hasMessageStartingWith("Brand not found for id:");
+                .isInstanceOf(CustomException.class)
+                .hasMessageContaining("not found");
     }
 
     @Test

@@ -1,9 +1,7 @@
 package com.chiva.phoneshop.service.impl;
 
 import com.chiva.phoneshop.constants.MessageResponseCode;
-import com.chiva.phoneshop.exception.ApiException;
 import com.chiva.phoneshop.exception.CustomException;
-import com.chiva.phoneshop.exception.ResourceNotFoundException;
 import com.chiva.phoneshop.mapper.BrandMapper;
 import com.chiva.phoneshop.model.Brand;
 import com.chiva.phoneshop.repository.BrandRepository;
@@ -12,7 +10,6 @@ import com.chiva.phoneshop.spec.BrandSpecification;
 import com.chiva.phoneshop.utils.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +29,7 @@ public class BrandServiceImpl implements BrandService {
     public Brand save(Brand entity) {
         log.info("Creating new brand {}", entity);
         if (brandRepository.existsByNameIgnoreCase(entity.getName().trim()))
-            throw new ApiException(HttpStatus.BAD_REQUEST,"ERR-002", "Brand already exist.");
+            throw new CustomException(MessageResponseCode.ERR_003,"Brand already exist.");
         return brandRepository.save(entity);
     }
 

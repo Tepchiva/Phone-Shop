@@ -6,9 +6,6 @@ import com.chiva.phoneshop.service.ModelService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 @Mapper(componentModel = "spring", uses = {ModelService.class})
 public interface ProductMapper {
 

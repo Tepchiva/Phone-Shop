@@ -1,6 +1,7 @@
 package com.chiva.phoneshop.service.impl;
 
-import com.chiva.phoneshop.exception.ResourceNotFoundException;
+import com.chiva.phoneshop.constants.MessageResponseCode;
+import com.chiva.phoneshop.exception.CustomException;
 import com.chiva.phoneshop.model.Model;
 import com.chiva.phoneshop.repository.ModelRepository;
 import com.chiva.phoneshop.service.ModelService;
@@ -36,7 +37,7 @@ public class ModelServiceImp implements ModelService {
     public Model getById(Integer id) {
         return modelRepository
                 .findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Model", id));
+                .orElseThrow(() -> new CustomException(MessageResponseCode.ERR_002, "Data not found."));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.chiva.phoneshop.exception;
 
+import com.chiva.phoneshop.constants.MessageResponseCode;
 import com.chiva.phoneshop.service.MessageResponseService;
 import io.opentracing.Tracer;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +26,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
-    @ExceptionHandler(ApiException.class)
-    public ResponseEntity<?> handleHttpClientErrorException(ApiException e) {
-        ErrorResponse errorResponse = new ErrorResponse(e.getCode(), e.getMessage());
-        return ResponseEntity.status(e.getStatus()).body(errorResponse);
-    }
-
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> customExceptionHandler(CustomException e) {
         log.error("Custom log error: ", e);
@@ -38,7 +33,7 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<?> handleExceptionError(Throwable throwable) {
-        ErrorResponse errorResponse = new ErrorResponse("ERR-500", "Internal server error");
+        ErrorResponse errorResponse = new ErrorResponse(MessageResponseCode.ERR_500, "Internal server error", tracer.activeSpan().context().toSpanId());
         log.error("THROWABLE EXCEPTION: ", throwable);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
