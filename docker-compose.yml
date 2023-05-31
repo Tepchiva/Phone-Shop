@@ -72,8 +72,26 @@ services:
     ports:
       - "9200:9200"
 
+  rabbitmq:
+    image: rabbitmq:3.11-management
+    container_name: rabbitmq
+    hostname: 'rabbitmq'
+    labels:
+      NAME: "rabbitmq"
+    environment:
+      RABBITMQ_DEFAULT_USER: "admin"
+      RABBITMQ_DEFAULT_PASS: "123456"
+      # RABBITMQ_DEFAULT_VHOST: "/"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbit_data:/var/lib/rabbitmq/mnesia
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+
 volumes:
   phone_shop_vl: {}
+  rabbit_data: {}
   data01:
     driver: local
   eslog:
