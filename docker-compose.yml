@@ -28,7 +28,7 @@ services:
       - POSTGRES_DB=pg_phone_shop
     volumes:
       - phone_shop_vl:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./config/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   jaeger:
     image: jaegertracing/all-in-one:1.45
@@ -81,13 +81,13 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: "admin"
       RABBITMQ_DEFAULT_PASS: "123456"
-      # RABBITMQ_DEFAULT_VHOST: "/"
+      RABBITMQ_DEFAULT_VHOST: "/"
     ports:
       - "5672:5672"
       - "15672:15672"
     volumes:
       - rabbit_data:/var/lib/rabbitmq/mnesia
-      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+      - ./config/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
 
 volumes:
   phone_shop_vl: {}

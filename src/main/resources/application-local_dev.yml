@@ -22,6 +22,21 @@ spring:
     serialization:
       fail-on-empty-beans : false
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: 123456
+    virtual-host: /
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 2s
+          max-interval: 20s
+          max-attempts: 5
+          multiplier: 2
+
 opentracing:
   jaeger:
     http-sender:
@@ -32,3 +47,4 @@ opentracing:
     const-sampler:
       decision: true
     expand-exception-logs: true
+
