@@ -28,14 +28,17 @@ spring:
     username: admin
     password: 123456
     virtual-host: /
-    listener:
-      simple:
-        retry:
-          enabled: true
-          initial-interval: 2s
-          max-interval: 20s
-          max-attempts: 5
-          multiplier: 2
+
+rabbitmq:
+  notification:
+    exchange: ps.notification.exchange.topic
+    multi-message:
+      queue: ps.notification.queue.multi-message
+      routing-key: ps.notification.key.multi-message
+    multi-message.error:
+      queue: ps.notification.queue.multi-message.error
+      routing-key: ps.notification.key.multi-message.error
+
 
 opentracing:
   jaeger:

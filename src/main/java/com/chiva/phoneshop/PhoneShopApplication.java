@@ -18,5 +18,4 @@ public class PhoneShopApplication {
             System.out.println("Start spring boot application...!");
         };
     }
-
 }
