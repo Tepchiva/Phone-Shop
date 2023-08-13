@@ -28,7 +28,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class LoggingAop {
 
-    final private Tracer tracer;
+    private final Tracer tracer;
 
     @Around("execution(* com.chiva.phoneshop..*.*(..)) && !execution(* com.chiva.phoneshop.config..*(..))")
     public Object logAroundAnyMethods(ProceedingJoinPoint joinPoint) throws Throwable{
