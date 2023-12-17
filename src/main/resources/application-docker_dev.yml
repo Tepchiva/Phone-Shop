@@ -32,3 +32,14 @@ opentracing:
     const-sampler:
       decision: true
     expand-exception-logs: true
+
+
+rabbitmq:
+  notification:
+    exchange: ps.notification.exchange.topic
+    multi-message:
+      queue: ps.notification.queue.multi-message
+      routing-key: ps.notification.key.multi-message
+    multi-message.error:
+      queue: ps.notification.queue.multi-message.error
+      routing-key: ps.notification.key.multi-message.error
