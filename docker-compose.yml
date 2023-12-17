@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   phone_shop_docker_dev:
-    image: 'phone-shop-spring-boot-docker-postgres:latest'
+    image: 'phone-shop:latest'
     build:
       context: .
     ports:
@@ -10,12 +10,18 @@ services:
     container_name: phone_shop_app
     depends_on:
       - db
+      - jaeger
     environment:
       - SPRING_PROFILES_ACTIVE=docker_dev
       - DATASOURCE_URL=jdbc:postgresql://db:5432/pg_phone_shop
       - DATASOURCE_USERNAME=admin
       - DATASOURCE_PASSWORD=admin
       - JAEGER_URL=http://jaeger:14268/api/traces
+      - RABBIT_HOST=rabbitmq
+      - RABBIT_PORT=5672
+      - RABBIT_USERNAME=admin
+      - RABBIT_PASSWORD=123456
+      - RABBIT_VIRTUAL_HOST=/
 
   db:
     image: 'postgres:13.1-alpine'
